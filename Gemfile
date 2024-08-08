@@ -5,7 +5,7 @@ gemspec
 gem 'bundler'
 gem 'rake'
 gem 'pry-byebug'
-gem 'mongoid', '~> 8'
+gem 'mongoid', '~> 9'
 
 group :test do
   gem 'rspec-given', '~> 3.5'

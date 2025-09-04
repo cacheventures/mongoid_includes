@@ -12,14 +12,14 @@ Gem::Specification.new do |s|
   s.authors = ['Máximo Mussini']
 
   s.email = ['maximomussini@gmail.com']
-  s.homepage = %q{https://github.com/ElMassimo/mongoid_includes}
+  s.homepage = %q{https://github.com/cacheventures/mongoid_includes}
 
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=2.0.0'
   s.rdoc_options = ['--charset=UTF-8']
 
   s.require_path = 'lib'
-  s.files        = Dir.glob('lib/**/*') + %w(CHANGELOG.md LICENSE.txt README.md Rakefile)
+  s.files        = Dir.glob('lib/**/*') + %w(LICENSE.txt README.md Rakefile)
   s.test_files   = Dir.glob('spec/**/*')
 
   s.add_runtime_dependency 'mongoid', ['>= 7.0.10', '< 10.0.0']

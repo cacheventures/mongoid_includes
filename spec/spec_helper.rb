@@ -54,3 +54,5 @@ RSpec.configure do |config|
     Mongoid.purge!
   end
 end
+
+Time.zone = 'UTC'

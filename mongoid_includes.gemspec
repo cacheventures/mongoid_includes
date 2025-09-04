@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ['--charset=UTF-8']
 
   s.require_path = 'lib'
-  s.files        = Dir.glob('lib/**/*') + %w(CHANGELOG.md LICENSE.txt README.md Rakefile)
+  s.files        = Dir.glob('lib/**/*') + %w(LICENSE.txt README.md Rakefile)
   s.test_files   = Dir.glob('spec/**/*')
 
   s.add_runtime_dependency 'mongoid', ['>= 7.0.10', '< 9.0.0']

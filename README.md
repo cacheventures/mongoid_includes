@@ -2,7 +2,7 @@ Mongoid::Includes
 =====================
 
 [![Gem Version](https://badge.fury.io/rb/mongoid_includes.svg)](https://rubygems.org/gems/mongoid_includes)
-[![Build Status](https://github.com/cacheventures/mongoid_includes/workflows/ci/badge.svg)](https://github.com/cacheventures/mongoid_includes/actions)
+[![Build Status](https://github.com/cacheventures/mongoid_includes/workflows/CI/badge.svg)](https://github.com/cacheventures/mongoid_includes/actions)
 
 `Mongoid::Includes` improves eager loading in Mongoid, supporting polymorphic associations, and nested eager loading.
 

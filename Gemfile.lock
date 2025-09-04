@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mongoid_includes (3.0.2)
+    mongoid_includes (3.0.3)
       mongoid (>= 7.0.10, < 10.0.0)
 
 GEM

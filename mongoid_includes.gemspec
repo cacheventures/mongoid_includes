@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.authors = ['Máximo Mussini']
 
   s.email = ['maximomussini@gmail.com']
-  s.homepage = %q{https://github.com/ElMassimo/mongoid_includes}
+  s.homepage = %q{https://github.com/cacheventures/mongoid_includes}
 
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=2.0.0'

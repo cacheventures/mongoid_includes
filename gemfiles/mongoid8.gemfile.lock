@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     mongoid_includes (3.0.3)
       mongoid (>= 7.0.10, < 10.0.0)
@@ -26,51 +26,53 @@ GEM
     benchmark (0.4.1)
     bigdecimal (3.2.3)
     bson (5.1.1)
-    byebug (11.1.3)
+    byebug (12.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
-    diff-lcs (1.5.1)
-    docile (1.3.2)
+    diff-lcs (1.6.2)
+    docile (1.4.1)
     drb (2.2.3)
     given_core (3.8.2)
       sorcerer (>= 0.3.7)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    json (2.3.1)
+    json (2.15.0)
     logger (1.7.0)
     method_source (1.1.0)
     minitest (5.25.5)
     mongo (2.21.3)
       base64
       bson (>= 4.14.1, < 6.0.0)
-    mongoid (9.0.8)
+    mongoid (8.1.11)
       activemodel (>= 5.1, < 8.1, != 7.0.0)
       concurrent-ruby (>= 1.0.5, < 2.0)
       mongo (>= 2.18.0, < 3.0.0)
-    pry (0.14.2)
+      ruby2_keywords (~> 0.0.5)
+    pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.10.1)
-      byebug (~> 11.0)
-      pry (>= 0.13, < 0.15)
-    rake (13.0.1)
-    rspec (3.13.0)
+    pry-byebug (3.11.0)
+      byebug (~> 12.0)
+      pry (>= 0.13, < 0.16)
+    rake (13.3.0)
+    rspec (3.13.1)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.0)
+    rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.1)
+    rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-given (3.8.2)
       given_core (= 3.8.2)
       rspec (>= 2.14.0)
-    rspec-mocks (3.13.1)
+    rspec-mocks (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-support (3.13.1)
+    rspec-support (3.13.6)
+    ruby2_keywords (0.0.5)
     securerandom (0.4.1)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -84,10 +86,11 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   bundler
-  mongoid (~> 9)
+  mongoid (~> 8.1)
   mongoid_includes!
   pry-byebug
   rake
@@ -95,4 +98,4 @@ DEPENDENCIES
   simplecov (~> 0.17.0)
 
 BUNDLED WITH
-   2.7.2
+   2.6.9

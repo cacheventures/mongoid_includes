@@ -14,10 +14,6 @@ jobs:
         include:
           - os: ubuntu-latest
             ruby: "3.2"
-            gemfile: gemfiles/mongoid7.gemfile
-            gemfile_name: mongoid7
-          - os: ubuntu-latest
-            ruby: "3.2"
             gemfile: gemfiles/mongoid8.gemfile
             gemfile_name: mongoid8
           - os: ubuntu-latest

@@ -4,3 +4,5 @@ spec/mongo.log
 
 coverage.data/
 coverage/
+
+.bundle/

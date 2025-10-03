@@ -1,21 +1,36 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 jobs:
   tests:
-    name: Tests
+    name: Ruby ${{ matrix.ruby }} • ${{ matrix.gemfile_name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        ruby: [
-          "3.1",
-        ]
-        gemfile: [
-          "gemfiles/mongoid7",
-          "gemfiles/mongoid8",
-        ]
-        experimental: [false]
+        include:
+          - os: ubuntu-latest
+            ruby: "3.2"
+            gemfile: gemfiles/mongoid8.gemfile
+            gemfile_name: mongoid8
+          - os: ubuntu-latest
+            ruby: "3.2"
+            gemfile: Gemfile
+            gemfile_name: mongoid9
+          - os: ubuntu-latest
+            ruby: "3.3"
+            gemfile: Gemfile
+            gemfile_name: mongoid9
+          - os: ubuntu-latest
+            ruby: "3.4"
+            gemfile: Gemfile
+            gemfile_name: mongoid9
+
+    env:
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
 
     steps:
       - name: Checkout code

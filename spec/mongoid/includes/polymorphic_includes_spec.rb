@@ -1,7 +1,4 @@
 require 'spec_helper'
-require 'open3'
-require 'rbconfig'
-require 'securerandom'
 
 describe Mongoid::Includes::Criteria do
 
@@ -110,6 +107,8 @@ describe Mongoid::Includes::Criteria do
       let(:project_root) { File.expand_path('../../..', __dir__) }
 
       it 'does not error when includes is evaluated from the CLI' do
+        require 'open3'
+
         database_name = "mongoid_includes_spec_#{SecureRandom.hex(6)}"
         base_script = <<~RUBY
           require 'bundler/setup'

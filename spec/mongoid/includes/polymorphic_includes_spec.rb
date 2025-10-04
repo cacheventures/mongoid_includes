@@ -164,9 +164,14 @@ describe Mongoid::Includes::Criteria do
           Mongoid::Clients.default.database.drop
         RUBY
 
+        bundle_gemfile = ENV.fetch(
+          'BUNDLE_GEMFILE',
+          File.join(project_root, 'Gemfile')
+        )
+
         run_script = lambda do |script|
           Open3.capture2e(
-            { 'BUNDLE_GEMFILE' => File.join(project_root, 'Gemfile') },
+            { 'BUNDLE_GEMFILE' => bundle_gemfile },
             RbConfig.ruby,
             '-',
             chdir: project_root,

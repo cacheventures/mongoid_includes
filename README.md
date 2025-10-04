@@ -70,7 +70,7 @@ BUNDLE_GEMFILE=gemfiles/mongoid8.gemfile bundle install
 # run the specs using that Gemfile
 BUNDLE_GEMFILE=gemfiles/mongoid8.gemfile bundle exec rspec
 # or
-BUNDLE_GEMFILE=gemfiles/mongoid8.gemfile bundle exec bin/rspec
+BUNDLE_GEMFILE=gemfiles/mongoid8.gemfile bin/rspec
 ```
 
 If you only need to run a single spec file while using the alternate Gemfile, pass the path to `rspec` as usual, for example:

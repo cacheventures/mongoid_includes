@@ -1,4 +1,7 @@
 require 'spec_helper'
+require 'open3'
+require 'rbconfig'
+require 'securerandom'
 
 describe Mongoid::Includes::Criteria do
 
@@ -54,6 +57,128 @@ describe Mongoid::Includes::Criteria do
         expect {
           criteria.includes(:musicians, from: :associated_act)
         }.to raise_error(Mongoid::Includes::Errors::InvalidPolymorphicIncludes)
+      end
+    end
+
+    context 'eager loading polymorphic belongs_to associations with multiple concrete types' do
+      before(:context) do
+        class PolyRelated
+          include Mongoid::Document
+          store_in collection: :poly_relateds
+        end
+
+        class PolyMain
+          include Mongoid::Document
+          store_in collection: :poly_mains
+
+          belongs_to :related, polymorphic: true, optional: true
+        end
+
+        class PolyTwo < PolyRelated
+          has_one :parent, class_name: 'PolyMain', as: :related, inverse_of: :related
+        end
+
+        class PolyThree < PolyRelated
+          has_one :parent, class_name: 'PolyMain', as: :related, inverse_of: :related
+        end
+      end
+
+      after(:context) do
+        %i[PolyMain PolyTwo PolyThree PolyRelated].each do |const|
+          Object.send(:remove_const, const) if Object.const_defined?(const, false)
+        end
+      end
+
+      it 'loads the related documents for each concrete type without raising' do
+        PolyMain.create!(related: PolyTwo.create!)
+        PolyMain.create!(related: PolyThree.create!)
+
+        loaded = nil
+        expect {
+          loaded = PolyMain.includes(:related).entries
+        }.not_to raise_error
+
+        expect(loaded.map { |doc| doc.related.class }).to match_array([PolyTwo, PolyThree])
+
+        expect {
+          PolyMain.last.related.id
+        }.not_to raise_error
+      end
+    end
+
+    context 'polymorphic eager loading in a fresh Ruby process' do
+      let(:project_root) { File.expand_path('../../..', __dir__) }
+
+      it 'does not error when includes is evaluated from the CLI' do
+        database_name = "mongoid_includes_spec_#{SecureRandom.hex(6)}"
+        base_script = <<~RUBY
+          require 'bundler/setup'
+          require 'mongoid'
+          require 'mongoid_includes'
+
+          Mongoid.load_configuration(
+            clients: {
+              default: {
+                database: '#{database_name}',
+                hosts: %w[localhost:27017]
+              }
+            }
+          )
+
+          class Main
+            include Mongoid::Document
+            belongs_to :related, polymorphic: true, optional: true
+          end
+
+          class Related
+            include Mongoid::Document
+          end
+
+          class Two < Related
+            has_one :parent, as: :related
+          end
+
+          class Three < Related
+            has_one :parent, as: :related
+          end
+        RUBY
+
+        init_script = base_script + <<~RUBY
+          client = Mongoid::Clients.default
+          begin
+            client.database.drop
+          rescue Mongo::Error::OperationFailure
+          end
+
+          Main.destroy_all
+          Related.destroy_all
+
+          Main.create!(related: Two.create!)
+          Main.create!(related: Three.create!)
+        RUBY
+
+        bad_script = base_script + <<~RUBY
+          Main.includes(:related).entries
+          Main.last.related.id
+
+          Mongoid::Clients.default.database.drop
+        RUBY
+
+        run_script = lambda do |script|
+          Open3.capture2e(
+            { 'BUNDLE_GEMFILE' => File.join(project_root, 'Gemfile') },
+            RbConfig.ruby,
+            '-',
+            chdir: project_root,
+            stdin_data: script
+          )
+        end
+
+        init_out, init_status = run_script.call(init_script)
+        expect(init_status).to be_success, "failed to prepare polymorphic data: #{init_out}"
+
+        bad_out, bad_status = run_script.call(bad_script)
+        expect(bad_status).to be_success, "expected CLI reproduction to succeed, got #{bad_status.exitstatus}: #{bad_out}"
       end
     end
   end

@@ -54,6 +54,7 @@ module Mongoid
       # Returns an Inclusion that can be eager loaded as usual.
       def for_class_name(class_name)
         Inclusion.new metadata.clone.instance_eval { |relation_metadata|
+          @options = @options.dup
           @options[:class_name] = @class_name = class_name
           @options[:polymorphic], @options[:as], @polymorphic, @klass = nil
           self

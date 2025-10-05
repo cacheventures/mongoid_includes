@@ -59,47 +59,34 @@ describe Mongoid::Includes::Criteria do
 
     context 'eager loading polymorphic belongs_to associations with multiple concrete types' do
       before(:context) do
-        class PolyRelated
+        class Main
           include Mongoid::Document
-          store_in collection: :poly_relateds
-        end
-
-        class PolyMain
-          include Mongoid::Document
-          store_in collection: :poly_mains
-
           belongs_to :related, polymorphic: true, optional: true
         end
 
-        class PolyTwo < PolyRelated
-          has_one :parent, class_name: 'PolyMain', as: :related, inverse_of: :related
+        class Related
+          include Mongoid::Document
+          has_one :parent, as: :related
         end
 
-        class PolyThree < PolyRelated
-          has_one :parent, class_name: 'PolyMain', as: :related, inverse_of: :related
-        end
+        class Two < Related; end
+        class Three < Related; end
       end
 
       after(:context) do
-        %i[PolyMain PolyTwo PolyThree PolyRelated].each do |const|
+        %i[Main Related Two Three].each do |const|
           Object.send(:remove_const, const) if Object.const_defined?(const, false)
         end
       end
 
       it 'loads the related documents for each concrete type without raising' do
-        PolyMain.create!(related: PolyTwo.create!)
-        PolyMain.create!(related: PolyThree.create!)
+        Main.create!(related: Two.create!)
+        Main.create!(related: Three.create!)
 
         loaded = nil
-        expect {
-          loaded = PolyMain.includes(:related).entries
-        }.not_to raise_error
-
-        expect(loaded.map { |doc| doc.related.class }).to match_array([PolyTwo, PolyThree])
-
-        expect {
-          PolyMain.last.related.id
-        }.not_to raise_error
+        expect { loaded = Main.includes(:related).entries }.not_to raise_error
+        expect(loaded.map { |doc| doc.related.class }).to match_array([Two, Three])
+        expect { Main.last.related.id }.not_to raise_error
       end
     end
 
@@ -131,15 +118,11 @@ describe Mongoid::Includes::Criteria do
 
           class Related
             include Mongoid::Document
-          end
-
-          class Two < Related
             has_one :parent, as: :related
           end
 
-          class Three < Related
-            has_one :parent, as: :related
-          end
+          class Two < Related; end
+          class Three < Related; end
         RUBY
 
         init_script = base_script + <<~RUBY
